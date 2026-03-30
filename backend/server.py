@@ -928,6 +928,18 @@ async def seed_database():
                 "last_verified_date": datetime.utcnow()
             },
             {
+                "topic": "investigation_timelines",
+                "category": "Investigation",
+                "title": "Investigation Timelines - Priority 1 and Priority 2",
+                "summary": "Understanding CPS investigation response timeframes",
+                "statute_citation": "Texas Family Code §261.301",
+                "policy_citation": "DFPS CPS Handbook §2230",
+                "plain_language_explanation": "CPS investigations are classified by priority. Priority 1 cases (immediate danger) require a response within 24 hours. Priority 2 cases (less immediate concern) require a response within 72 hours. CPS has 45 days to complete an investigation and 60 days to notify you of the finding in writing.",
+                "what_this_means": "If CPS says they're investigating you, they must follow these timelines. If they don't show up within the required time for their priority level, document it. If they don't give you written notice of their finding within 60 days, that's a violation. You can file a complaint and challenge any finding that doesn't follow proper procedure.",
+                "what_if_violated": "Keep a timeline of all CPS contacts. If timelines aren't met, document it and notify your attorney. Procedural violations can be grounds to challenge findings or have the investigation dismissed. Request all CPS records through an open records request to verify dates.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
                 "topic": "emergency_removal",
                 "category": "Removal",
                 "title": "Emergency Removal - What CPS Can and Cannot Do",
@@ -976,15 +988,51 @@ async def seed_database():
                 "last_verified_date": datetime.utcnow()
             },
             {
-                "topic": "visitation_rights",
+                "topic": "visitation_rights_detail",
                 "category": "Visitation",
-                "title": "Visitation Rights with Your Child",
-                "summary": "Your right to visit your child in foster care",
+                "title": "Visitation Rights in Detail",
+                "summary": "Comprehensive guide to your visitation rights with your child in foster care",
                 "statute_citation": "Texas Family Code §263.102",
                 "policy_citation": "DFPS CPS Handbook §4500",
-                "plain_language_explanation": "You have the right to regular visitation with your child unless a court specifically orders otherwise. Visits should be at least once per week and should work toward unsupervised and overnight visits as you complete services. CPS cannot cancel visits as punishment or deny visits because of minor service plan delays.",
-                "what_this_means": "Visitation is a protected right, not a privilege CPS can take away. Every visit matters - it maintains your bond with your child and shows the court you're committed. CPS is supposed to facilitate visits, not create barriers. Visits should increase in frequency and duration over time, not stay the same or decrease.",
+                "plain_language_explanation": "You have the right to regular visitation with your child unless a court specifically orders otherwise. Visits should be at least once per week and should work toward unsupervised and overnight visits as you complete services. CPS cannot cancel visits as punishment or deny visits because of minor service plan delays. Visits should be scheduled at reasonable times and locations that accommodate your work schedule when possible.",
+                "what_this_means": "Visitation is a protected right, not a privilege CPS can take away. Every visit matters - it maintains your bond with your child and shows the court you're committed. CPS is supposed to facilitate visits, not create barriers. Visits should increase in frequency and duration over time, not stay the same or decrease. You can bring appropriate toys, books, and snacks to visits.",
                 "what_if_violated": "If CPS cancels visits without court authority or valid safety reasons, document every cancellation: date, reason given, who cancelled it. File a motion to enforce visitation and ask the judge to order make-up visits. Bring your documentation to court - judges take visitation violations seriously.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "constitutional_protections",
+                "category": "Constitutional Rights",
+                "title": "Constitutional Protections for Parents",
+                "summary": "Your fundamental constitutional rights as a parent under the U.S. Constitution",
+                "statute_citation": "U.S. Constitution 4th Amendment, 14th Amendment",
+                "policy_citation": None,
+                "plain_language_explanation": "The U.S. Constitution protects your fundamental right to parent your children. The 14th Amendment recognizes that parents have a fundamental liberty interest in the care, custody, and control of their children. The 4th Amendment protects you from unreasonable searches and seizures, including your home and your children. The government must have compelling reasons and follow proper procedures to interfere with your parental rights.",
+                "what_this_means": "Your right to parent is not just a Texas law - it's a constitutional right recognized by the U.S. Supreme Court. CPS and the courts must show clear and convincing evidence of danger to remove your child permanently. Mere poverty, dirty homes, or differences in parenting style are not sufficient reasons. The state has the burden of proof, not you.",
+                "what_if_violated": "Constitutional violations can lead to federal civil rights lawsuits under 42 U.S.C. §1983. Document any violations: forced entry, child removal without emergency, denial of due process, retaliation for exercising rights. Consult with a civil rights attorney if you believe your constitutional rights were violated.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "policy_vs_law",
+                "category": "Legal Information",
+                "title": "Policy vs. Law - Understanding the Difference",
+                "summary": "The critical distinction between DFPS internal policies and enforceable Texas law",
+                "statute_citation": None,
+                "policy_citation": "DFPS CPS Handbook (All Sections)",
+                "plain_language_explanation": "DFPS has internal policies in their handbook that guide caseworkers' actions, but these policies are NOT the same as Texas law. Laws are passed by the Texas Legislature and can be enforced by courts. Policies are internal agency guidelines. When policy conflicts with law, law wins. CPS caseworkers often cite 'policy' as if it's law - it's not.",
+                "what_this_means": "If a caseworker says 'It's our policy,' that doesn't mean they can legally require it. Ask: 'What law requires this?' If there's no law, you can challenge it. Policy violations may result in internal discipline for the caseworker, but they don't give you automatic legal remedies. Law violations can be challenged in court and may result in case dismissal or return of your child.",
+                "what_if_violated": "Always ask for the legal citation, not just 'policy.' Document when CPS cites policy as if it's law. Bring this to your attorney's attention. If policy violations harm you, file a complaint with the DFPS Ombudsman. If law violations occur, your attorney can raise them in court immediately.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "asfa_15_month",
+                "category": "Reunification",
+                "title": "ASFA 15-Month Rule Explained",
+                "summary": "Understanding the federal 15-month timeline for reunification or permanency",
+                "statute_citation": "Adoption and Safe Families Act (ASFA) 42 U.S.C. §675(5)(E)",
+                "policy_citation": "DFPS CPS Handbook §6000",
+                "plain_language_explanation": "The Adoption and Safe Families Act (ASFA) requires that if your child has been in foster care for 15 of the last 22 months, DFPS must file for termination of parental rights unless there's a compelling reason not to. This is a federal law that applies to all states receiving federal foster care funding, including Texas. However, there are exceptions for kinship care, documented compelling reasons, and when termination is not in the child's best interest.",
+                "what_this_means": "The clock starts ticking from the date your child enters foster care. You have approximately 15 months to complete services, demonstrate changed circumstances, and work toward reunification. After 15 months, the pressure increases significantly for either reunification or permanent placement elsewhere. This doesn't mean automatic termination - it means DFPS must take action one way or another.",
+                "what_if_violated": "If you've substantially completed services and reunification is being unreasonably delayed, file a motion to return your child. Document all completed services, changed circumstances, and your readiness for reunification. Challenge any unnecessary delays. If ASFA is being used as a 'deadline' weapon against you despite your compliance, argue compelling reasons for exception.",
                 "last_verified_date": datetime.utcnow()
             }
         ]
