@@ -57,6 +57,19 @@ const TEMPLATE_CONFIGS: Record<string, any> = {
     ],
     aiPrompt: 'Help me request relative placement citing Texas Family Code §262.114 and §264.751 regarding relative placement preference.',
   },
+  attorney_representation: {
+    title: 'Notice of Attorney Representation',
+    fields: [
+      { key: 'your_name', label: 'Your Full Name', type: 'text', required: true },
+      { key: 'case_number', label: 'Case Number', type: 'text', required: true },
+      { key: 'attorney_name', label: 'Attorney Name', type: 'text', required: true },
+      { key: 'attorney_firm', label: 'Law Firm', type: 'text', required: false },
+      { key: 'attorney_phone', label: 'Attorney Phone', type: 'text', required: true },
+      { key: 'attorney_email', label: 'Attorney Email', type: 'text', required: false },
+      { key: 'effective_date', label: 'Effective Date', type: 'text', required: true },
+    ],
+    aiPrompt: 'Help me draft a formal notice to DFPS that I have retained legal representation.',
+  },
   open_records: {
     title: 'Open Records Request (TPIA)',
     fields: [
@@ -68,6 +81,52 @@ const TEMPLATE_CONFIGS: Record<string, any> = {
       { key: 'records_requested', label: 'Specific Records Requested', type: 'textarea', required: true },
     ],
     aiPrompt: 'Help me draft a Texas Public Information Act (TPIA) request for all CPS records related to my case.',
+  },
+  compliance_affidavit: {
+    title: 'Affidavit of Compliance',
+    fields: [
+      { key: 'your_name', label: 'Your Full Name', type: 'text', required: true },
+      { key: 'case_number', label: 'Case Number', type: 'text', required: true },
+      { key: 'services_completed', label: 'Services Completed', type: 'textarea', required: true },
+      { key: 'completion_dates', label: 'Completion Dates', type: 'textarea', required: true },
+      { key: 'supporting_documentation', label: 'Supporting Documentation Attached', type: 'textarea', required: false },
+    ],
+    aiPrompt: 'Help me create an affidavit documenting my completion of court-ordered services.',
+  },
+  caseworker_reassignment: {
+    title: 'Request for Caseworker Reassignment',
+    fields: [
+      { key: 'your_name', label: 'Your Full Name', type: 'text', required: true },
+      { key: 'case_number', label: 'Case Number', type: 'text', required: true },
+      { key: 'current_caseworker', label: 'Current Caseworker Name', type: 'text', required: true },
+      { key: 'reason_for_request', label: 'Reason for Reassignment Request', type: 'textarea', required: true },
+      { key: 'specific_incidents', label: 'Specific Incidents or Concerns', type: 'textarea', required: true },
+    ],
+    aiPrompt: 'Help me request a caseworker reassignment due to conflict or misconduct.',
+  },
+  visitation_dispute: {
+    title: 'Visitation Dispute Letter',
+    fields: [
+      { key: 'your_name', label: 'Your Full Name', type: 'text', required: true },
+      { key: 'case_number', label: 'Case Number', type: 'text', required: true },
+      { key: 'child_name', label: "Child's Name", type: 'text', required: true },
+      { key: 'visitation_schedule', label: 'Current Visitation Schedule', type: 'textarea', required: true },
+      { key: 'dispute_details', label: 'Details of Dispute', type: 'textarea', required: true },
+      { key: 'requested_resolution', label: 'Requested Resolution', type: 'textarea', required: true },
+    ],
+    aiPrompt: 'Help me dispute cancelled or restricted visitation citing Texas Family Code §263.102.',
+  },
+  ombudsman_complaint: {
+    title: 'Complaint to DFPS Ombudsman',
+    fields: [
+      { key: 'your_name', label: 'Your Full Name', type: 'text', required: true },
+      { key: 'case_number', label: 'Case Number', type: 'text', required: true },
+      { key: 'complaint_against', label: 'Complaint Against (Name/Title)', type: 'text', required: true },
+      { key: 'complaint_summary', label: 'Summary of Complaint', type: 'textarea', required: true },
+      { key: 'dates_of_incidents', label: 'Dates of Incidents', type: 'textarea', required: true },
+      { key: 'desired_outcome', label: 'Desired Outcome', type: 'textarea', required: true },
+    ],
+    aiPrompt: 'Help me file a formal complaint with the DFPS Ombudsman about policy violations or misconduct.',
   },
 };
 
