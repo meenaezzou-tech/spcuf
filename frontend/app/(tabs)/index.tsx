@@ -14,7 +14,7 @@ import { caseAPI, deadlineAPI } from '../../src/services/api';
 import { Case, Deadline } from '../../src/types';
 import { Colors, Typography, Spacing, BorderRadius } from '../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { formatDistanceToNow } from 'date-fns';
+import CaseHealthMeter from '../../src/components/CaseHealthMeter';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -22,6 +22,7 @@ export default function DashboardScreen() {
   const [cases, setCases] = useState<Case[]>([]);
   const [activeCase, setActiveCase] = useState<Case | null>(null);
   const [deadlines, setDeadlines] = useState<Deadline[]>([]);
+  const [documentsCount, setDocumentsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -108,6 +109,13 @@ export default function DashboardScreen() {
         ) : (
           /* Active Case Dashboard */
           <>
+            {/* Case Health Meter */}
+            <CaseHealthMeter
+              caseData={activeCase}
+              documentsCount={documentsCount}
+              deadlinesCount={deadlines.length}
+            />
+            
             {/* Active Case Card */}
             <TouchableOpacity
               style={[styles.card, styles.activeCaseCard]}

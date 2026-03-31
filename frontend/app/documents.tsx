@@ -74,11 +74,7 @@ export default function DocumentTemplatesScreen() {
   ];
 
   const handleTemplateSelect = (templateId: string) => {
-    Alert.alert(
-      'Template Coming Soon',
-      'AI-assisted document templates will be available once the LLM budget is topped up. This feature uses Claude AI to help you fill out legal documents correctly.',
-      [{ text: 'OK' }]
-    );
+    router.push(`/documents/${templateId}`);
   };
 
   return (

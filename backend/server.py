@@ -1034,6 +1034,66 @@ async def seed_database():
                 "what_this_means": "The clock starts ticking from the date your child enters foster care. You have approximately 15 months to complete services, demonstrate changed circumstances, and work toward reunification. After 15 months, the pressure increases significantly for either reunification or permanent placement elsewhere. This doesn't mean automatic termination - it means DFPS must take action one way or another.",
                 "what_if_violated": "If you've substantially completed services and reunification is being unreasonably delayed, file a motion to return your child. Document all completed services, changed circumstances, and your readiness for reunification. Challenge any unnecessary delays. If ASFA is being used as a 'deadline' weapon against you despite your compliance, argue compelling reasons for exception.",
                 "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "icwa",
+                "category": "Special Protections",
+                "title": "ICWA - Indian Child Welfare Act",
+                "summary": "Special protections for Native American children and families in CPS cases",
+                "statute_citation": "Indian Child Welfare Act, 25 U.S.C. §§1901-1963",
+                "policy_citation": "DFPS CPS Handbook §1340",
+                "plain_language_explanation": "The Indian Child Welfare Act (ICWA) is a federal law that applies when a child is a member of or eligible for membership in a federally recognized Indian tribe. ICWA requires higher standards of proof for removal and termination, prioritizes placement with tribal members or Indian families, and gives tribes the right to intervene in cases. If your child has any Native American heritage, ICWA may apply and provides stronger protections than state law.",
+                "what_this_means": "If ICWA applies to your case, CPS must prove removal is necessary 'beyond a reasonable doubt' (higher than the normal standard). For termination, they must prove harm to your child by 'beyond a reasonable doubt' that continued custody will likely result in serious emotional or physical damage. The tribe must be notified and has the right to participate in all proceedings. Your child should be placed with relatives or tribal members first.",
+                "what_if_violated": "If you believe ICWA applies and CPS hasn't followed ICWA procedures, immediately notify the court and your tribe. ICWA violations can result in case dismissal or reversal on appeal. Contact your tribe's ICWA representative. Document your child's tribal eligibility. Many cases have been overturned years later due to ICWA violations.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "tpr_hearings",
+                "category": "Court",
+                "title": "TPR Hearings - Termination of Parental Rights",
+                "summary": "Understanding termination hearings, burden of proof, and how to fight it",
+                "statute_citation": "Texas Family Code §161.001, §161.003, §161.206",
+                "policy_citation": None,
+                "plain_language_explanation": "A TPR (Termination of Parental Rights) hearing is the most serious court proceeding in CPS cases. DFPS must prove by clear and convincing evidence that you committed specific acts or omissions listed in the law AND that termination is in the child's best interest. Common grounds include: endangerment, failed to comply with court orders, drug use that endangers the child, or abandonment. TPR is permanent - it ends your legal relationship with your child forever.",
+                "what_this_means": "Clear and convincing evidence is a high standard - more than 'preponderance' but less than 'beyond reasonable doubt'. DFPS must prove BOTH a ground for termination AND that it's in your child's best interest. You have the right to a jury trial in TPR cases. The judge or jury must find that termination serves your child's best interest, considering your child's bond with you, your efforts to improve, and available alternatives to termination.",
+                "what_if_violated": "If TPR is filed against you, get an attorney immediately - this is not a case to handle alone. Document every service you've completed, every visit you've had, every improvement you've made. Challenge each ground for termination specifically. Request a jury trial if you think a jury will be more sympathetic. Show the court your bond with your child and argue for additional time to reunify if you're close to completing services.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "casa_rights",
+                "category": "Court",
+                "title": "CASA Rights - Court Appointed Special Advocates",
+                "summary": "What a CASA can and cannot do in your child's case",
+                "statute_citation": "Texas Family Code §107.031",
+                "policy_citation": None,
+                "plain_language_explanation": "A CASA (Court Appointed Special Advocate) is a trained volunteer appointed by the judge to represent your child's best interests. The CASA investigates the case independently, visits your child regularly, reports to the judge, and makes recommendations about placement and services. CASA volunteers are not attorneys and are not your advocate - they advocate only for your child.",
+                "what_this_means": "The CASA has significant influence with the judge. They can visit your child without your permission, speak with teachers and doctors, and submit reports recommending what should happen in your case. Their recommendations carry weight. However, the CASA cannot make legal decisions, cannot force CPS to do anything, and cannot change court orders. Treat the CASA professionally - they're observing your cooperation and fitness as a parent.",
+                "what_if_violated": "If a CASA is biased against you, acts unprofessionally, or makes recommendations based on false information, you can file a complaint with the local CASA program and notify the judge. Document any inappropriate behavior. Request that your attorney cross-examine the CASA if they testify. You can also request the judge appoint a different CASA if there's a serious conflict, though judges rarely grant this.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "court_attorney_rights",
+                "category": "Legal Rights",
+                "title": "Court-Appointed Attorney Rights",
+                "summary": "Your right to legal representation and what your attorney must do",
+                "statute_citation": "Texas Family Code §107.013, §107.004",
+                "policy_citation": None,
+                "plain_language_explanation": "In CPS cases where termination is possible, you have a constitutional right to an attorney. If you cannot afford one, the court must appoint one for you at no cost. Your court-appointed attorney must advocate for YOUR wishes (not necessarily what they think is best), communicate with you regularly, investigate your case, present evidence, cross-examine witnesses, and advise you of your legal options.",
+                "what_this_means": "Your attorney works for you, not for the court or CPS. You have the right to meet with your attorney before hearings, to be consulted about major decisions, and to have your position presented to the judge even if the attorney disagrees. Your attorney should file motions, request discovery, subpoena witnesses, and fight for your rights. If your attorney pressures you to give up without exploring all options, that's a red flag.",
+                "what_if_violated": "If your court-appointed attorney isn't doing their job - missing hearings, not returning calls, pressuring you to agree to termination, not investigating your case - you can file a complaint with the Texas State Bar and request a new attorney from the judge. Document everything: missed meetings, lack of communication, failure to file motions. You can also file a 'Motion for New Counsel' explaining why your attorney is ineffective.",
+                "last_verified_date": datetime.utcnow()
+            },
+            {
+                "topic": "family_preservation",
+                "category": "Services",
+                "title": "Family Preservation Services",
+                "summary": "Services DFPS must offer to prevent removal and support reunification",
+                "statute_citation": "Texas Family Code §263.102, Family First Prevention Services Act",
+                "policy_citation": "DFPS CPS Handbook §4100",
+                "plain_language_explanation": "Family preservation services are support services designed to keep families together and prevent foster care placement. Under federal and Texas law, DFPS is required to make 'reasonable efforts' to prevent removal and to reunify families after removal. These services can include: parenting classes, counseling, substance abuse treatment, housing assistance, financial support, in-home safety services, and respite care. The Family First Prevention Services Act (FFPSA) emphasizes keeping children with families whenever safely possible.",
+                "what_this_means": "Before removing your child, CPS should attempt to provide services that address the safety concerns while your child remains home - unless there's imminent danger. After removal, DFPS must provide services to help you reunify. You have the right to request specific services that address your family's needs. Services should be accessible (transportation, scheduling, location) and evidence-based. DFPS cannot simply offer generic services and claim they made reasonable efforts.",
+                "what_if_violated": "If DFPS removed your child without attempting any family preservation services, or if they're not providing services that actually address the reasons for removal, document this. Your attorney can argue DFPS failed to make 'reasonable efforts' as required by law. This can be grounds for immediate return of your child. Request specific services in writing and keep copies. If services are denied or unavailable, document that too.",
+                "last_verified_date": datetime.utcnow()
             }
         ]
         
