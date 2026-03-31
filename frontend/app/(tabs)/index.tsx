@@ -154,10 +154,10 @@ export default function DashboardScreen() {
 
                 <TouchableOpacity
                   style={[styles.actionCard, { borderLeftColor: Colors.accent.copper }]}
-                  onPress={() => router.push('/documents/upload')}
+                  onPress={() => router.push('/documents')}
                 >
                   <Ionicons name="cloud-upload" size={24} color={Colors.accent.copper} />
-                  <Text style={styles.actionText}>Upload Doc</Text>
+                  <Text style={styles.actionText}>Documents</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity
