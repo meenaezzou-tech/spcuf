@@ -15,6 +15,7 @@ import { Case, Deadline } from '../../src/types';
 import { Colors, Typography, Spacing, BorderRadius } from '../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import CaseHealthMeter from '../../src/components/CaseHealthMeter';
+import { formatDistanceToNow } from 'date-fns';
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -323,7 +324,7 @@ const styles = StyleSheet.create({
   },
   caseId: {
     fontFamily: 'JetBrainsMono_500Medium',
-    fontSize: Typography.sizes.lg,
+    fontSize: Typography.sizes.base,
     color: Colors.white.soft,
     marginBottom: Spacing.sm,
   },

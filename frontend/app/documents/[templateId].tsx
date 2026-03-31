@@ -199,7 +199,8 @@ export default function TemplateFormScreen() {
     try {
       // Generate document text
       const documentText = generateDocumentText();
-      const base64Doc = Buffer.from(documentText).toString('base64');
+      // btoa is available in React Native / Expo web runtime
+      const base64Doc = btoa(unescape(encodeURIComponent(documentText)));
 
       await documentAPI.uploadDocument({
         case_id: activeCase!.id,

@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   },
   caseId: {
     fontFamily: 'JetBrainsMono_500Medium',
-    fontSize: Typography.sizes.lg,
+    fontSize: Typography.sizes.base,
     color: Colors.white.soft,
     marginBottom: Spacing.sm,
   },

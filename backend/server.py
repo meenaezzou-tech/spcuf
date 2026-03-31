@@ -314,9 +314,12 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(s
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authentication credentials")
 
 def generate_case_id() -> str:
-    """Generate a unique case ID like SPCUF-2025-001"""
-    timestamp = datetime.utcnow().strftime("%Y%m%d%H%M%S")
-    return f"SPCUF-{timestamp}"
+    """Generate a unique case ID like SPCUF-2025-A3F7"""
+    import random
+    import string
+    year = datetime.utcnow().strftime("%Y")
+    suffix = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
+    return f"SPCUF-{year}-{suffix}"
 
 # ============================================================================
 # FASTAPI APP
