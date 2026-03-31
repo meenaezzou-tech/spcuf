@@ -112,6 +112,10 @@ export const contactAPI = {
     const response = await api.get<Contact[]>(`/contacts/${caseId}`);
     return response.data;
   },
+
+  deleteContact: async (contactId: string): Promise<void> => {
+    await api.delete(`/contacts/${contactId}`);
+  },
 };
 
 // Deadline API
@@ -132,6 +136,10 @@ export const deadlineAPI = {
     await api.put(`/deadlines/${deadlineId}`, null, {
       params: { completed },
     });
+  },
+
+  deleteDeadline: async (deadlineId: string): Promise<void> => {
+    await api.delete(`/deadlines/${deadlineId}`);
   },
 };
 

@@ -292,9 +292,139 @@ metadata:
   test_sequence: 1
   run_ui: false
 
+  - task: "Delete Contact API"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added DELETE /api/contacts/{contact_id} endpoint with case ownership verification"
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed. DELETE /api/contacts/{contact_id} working correctly. Successfully created contact, deleted it, verified deletion, and tested 404 response for non-existent contact. Case ownership verification working properly."
+
+  - task: "Delete Deadline API"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added DELETE /api/deadlines/{deadline_id} endpoint with case ownership verification"
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive testing completed. DELETE /api/deadlines/{deadline_id} working correctly. Successfully calculated deadlines, deleted one, verified deletion, and tested 404 response for non-existent deadline. Case ownership verification working properly."
+
+frontend:
+  - task: "Auth Screens (Login, Register, Onboarding)"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/(auth)/"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Tested login flow via screenshot - working correctly"
+
+  - task: "Contacts Screen with Add/Delete"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/contacts.tsx"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: false
+        agent: "user"
+        comment: "Unmatched Route error when navigating to /contacts"
+      - working: true
+        agent: "main"
+        comment: "Fixed by adding all routes to Stack in _layout.tsx. Also added Add Contact modal with loading states and Delete with confirmation dialog. Verified via screenshot - route works, empty state shows correctly."
+
+  - task: "Deadlines Screen with Delete"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/deadlines.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Added delete functionality with confirmation dialogs, toggle complete, and overdue/urgent status indicators. Verified via screenshot."
+
+  - task: "AI Chat Graceful Error Handling"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/(tabs)/ai.tsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Added 402 budget exceeded and 500/503 error handling with user-friendly messages directing to Legal Library"
+
+  - task: "Dashboard with Active Case Display"
+    implemented: true
+    working: true
+    file: "/app/frontend/app/(tabs)/index.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Verified via screenshot after login - dashboard showing case health, active case, quick actions"
+
+  - task: "Case Create with Loading States"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/case/create.tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Already had loading/disabled states on Save button from previous agent"
+
+  - task: "Case Delete with Confirmation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/app/case/[id].tsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Delete functionality with Alert confirmation was already implemented by previous agent"
+
+  - task: "Custom Design System Implementation"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/constants/theme.ts"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Design system intact - monochrome palette, 7 accent colors, custom typography verified in screenshots"
+
 test_plan:
   current_focus:
-    - "AI Chat Integration with Claude"
+    []
   stuck_tasks:
     - "AI Chat Integration with Claude"
   test_all: false
@@ -305,3 +435,7 @@ agent_communication:
     message: "Completed implementation of SPCUF full-stack application with all core modules. Backend tested manually with curl - auth, cases, and AI chat all working. Ready for comprehensive backend testing. Frontend screens built but not yet tested."
   - agent: "testing"
     message: "Comprehensive backend testing completed. SUCCESS RATE: 90% (18/20 tests passed). ✅ WORKING: Auth system, case management, timeline events, document management, contact management, deadline calculation, resources, legal library. ❌ ISSUES: AI Chat failing due to budget limits (needs budget increase), minor error handling improvements needed. All previously untested APIs (documents, contacts, deadlines) are now confirmed working."
+  - agent: "main"
+    message: "Added DELETE endpoints for contacts and deadlines in backend. Fixed Contacts Unmatched Route by registering all routes in _layout.tsx. Rebuilt contacts.tsx with Add Contact modal (loading states) and Delete with confirmation. Rebuilt deadlines.tsx with Delete, toggle complete, and status indicators. Added graceful 402 error handling to AI chat. Please test the new DELETE /api/contacts/{contact_id} and DELETE /api/deadlines/{deadline_id} endpoints."
+  - agent: "testing"
+    message: "DELETE endpoints testing completed successfully. ✅ WORKING: Both DELETE /api/contacts/{contact_id} and DELETE /api/deadlines/{deadline_id} endpoints working correctly. Tested full workflow: create case → create contact → delete contact → verify deletion → test 404 for non-existent contact. Same for deadlines: calculate deadlines → delete deadline → verify deletion → test 404 for non-existent deadline. Case ownership verification working properly for both endpoints."

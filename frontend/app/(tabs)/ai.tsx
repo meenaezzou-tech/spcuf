@@ -64,9 +64,18 @@ export default function AIAdvisorScreen() {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error: any) {
       console.error('AI chat error:', error);
+      const statusCode = error?.response?.status;
+      let errorContent = 'I apologize, but I encountered an error. Please try again.';
+      
+      if (statusCode === 402 || (error?.response?.data?.detail && String(error.response.data.detail).toLowerCase().includes('budget'))) {
+        errorContent = 'The AI service budget has been exceeded. SPCUF Intelligence is temporarily unavailable. Please contact your administrator to restore service, or browse the Legal Library for pre-loaded Texas CPS information.';
+      } else if (statusCode === 503 || statusCode === 500) {
+        errorContent = 'The AI service is temporarily unavailable. Please try again in a few moments, or browse the Legal Library for immediate legal information.';
+      }
+
       const errorMessage: AIChatMessage = {
         role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again.',
+        content: errorContent,
       };
       setMessages((prev) => [...prev, errorMessage]);
     } finally {

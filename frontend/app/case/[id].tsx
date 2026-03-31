@@ -19,6 +19,7 @@ export default function CaseDetailScreen() {
   const { id } = useLocalSearchParams();
   const [caseData, setCaseData] = useState<Case | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -35,6 +36,34 @@ export default function CaseDetailScreen() {
       Alert.alert('Error', 'Failed to load case details');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Case',
+      'Are you sure you want to delete this case? This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: confirmDelete,
+        },
+      ]
+    );
+  };
+
+  const confirmDelete = async () => {
+    setIsDeleting(true);
+    try {
+      await caseAPI.deleteCase(id as string);
+      Alert.alert('Success', 'Case deleted successfully', [
+        { text: 'OK', onPress: () => router.replace('/(tabs)/cases') },
+      ]);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to delete case');
+      setIsDeleting(false);
     }
   };
 
@@ -61,6 +90,9 @@ export default function CaseDetailScreen() {
           <Ionicons name="arrow-back" size={24} color={Colors.white.soft} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Case Details</Text>
+        <TouchableOpacity onPress={handleDelete} style={styles.deleteButton} disabled={isDeleting}>
+          <Ionicons name="trash" size={22} color={Colors.accent.crimson} />
+        </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -160,6 +192,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: Spacing.lg,
     paddingTop: 60,
     paddingBottom: Spacing.lg,
@@ -171,9 +204,13 @@ const styles = StyleSheet.create({
     marginRight: Spacing.md,
   },
   headerTitle: {
+    flex: 1,
     fontFamily: 'PlayfairDisplay_700Bold',
     fontSize: Typography.sizes.xl,
     color: Colors.white.pure,
+  },
+  deleteButton: {
+    padding: Spacing.sm,
   },
   scrollContent: {
     padding: Spacing.lg,

@@ -404,6 +404,60 @@ def test_contact_retrieval():
         log_test("Get Contacts", "FAIL", "Failed to get contacts")
         return False
 
+def test_contact_deletion():
+    """Test deleting contacts"""
+    global test_contact_id
+    
+    print("=" * 60)
+    print("TESTING CONTACT MANAGEMENT - DELETE CONTACT")
+    print("=" * 60)
+    
+    if not test_contact_id:
+        log_test("Delete Contact", "FAIL", "No test contact ID available")
+        return False
+    
+    # Delete the contact
+    response = make_request("DELETE", f"/contacts/{test_contact_id}")
+    if response and response.status_code == 200:
+        data = response.json()
+        log_test("Delete Contact", "PASS", f"Deleted contact successfully: {data.get('message', '')}")
+        
+        # Verify the contact is gone by trying to get contacts list
+        response = make_request("GET", f"/contacts/{test_case_id}")
+        if response and response.status_code == 200:
+            contacts = response.json()
+            # Check if the deleted contact is no longer in the list
+            deleted_contact_exists = any(contact.get("id") == test_contact_id for contact in contacts)
+            if not deleted_contact_exists:
+                log_test("Verify Contact Deletion", "PASS", "Contact successfully removed from list")
+                test_contact_id = None  # Clear the ID since it's deleted
+                return True
+            else:
+                log_test("Verify Contact Deletion", "FAIL", "Contact still exists in list after deletion")
+                return False
+        else:
+            log_test("Verify Contact Deletion", "FAIL", "Failed to retrieve contacts list for verification")
+            return False
+    else:
+        log_test("Delete Contact", "FAIL", "Failed to delete contact")
+        return False
+
+def test_contact_deletion_nonexistent():
+    """Test deleting a non-existent contact"""
+    print("=" * 60)
+    print("TESTING CONTACT MANAGEMENT - DELETE NON-EXISTENT CONTACT")
+    print("=" * 60)
+    
+    # Try to delete a non-existent contact
+    fake_contact_id = "507f1f77bcf86cd799439011"  # Valid ObjectId format but doesn't exist
+    response = make_request("DELETE", f"/contacts/{fake_contact_id}", expect_status=404)
+    if response and response.status_code == 404:
+        log_test("Delete Non-existent Contact", "PASS", "Correctly returned 404 for non-existent contact")
+        return True
+    else:
+        log_test("Delete Non-existent Contact", "FAIL", f"Expected 404, got {response.status_code if response else 'No response'}")
+        return False
+
 def test_deadline_calculation():
     """Test statutory deadline calculation"""
     print("=" * 60)
@@ -434,6 +488,8 @@ def test_deadline_calculation():
 
 def test_deadline_retrieval():
     """Test retrieving deadlines for a case"""
+    global test_deadline_id
+    
     print("=" * 60)
     print("TESTING DEADLINE RETRIEVAL")
     print("=" * 60)
@@ -446,9 +502,69 @@ def test_deadline_retrieval():
     if response and response.status_code == 200:
         data = response.json()
         log_test("Get Deadlines", "PASS", f"Retrieved {len(data)} deadlines")
+        
+        # Store the first deadline ID for deletion testing
+        if data and len(data) > 0:
+            test_deadline_id = data[0]["id"]
+            print(f"   Stored deadline ID for deletion test: {test_deadline_id}")
+        
         return True
     else:
         log_test("Get Deadlines", "FAIL", "Failed to get deadlines")
+        return False
+
+def test_deadline_deletion():
+    """Test deleting deadlines"""
+    global test_deadline_id
+    
+    print("=" * 60)
+    print("TESTING DEADLINE MANAGEMENT - DELETE DEADLINE")
+    print("=" * 60)
+    
+    if not test_deadline_id:
+        log_test("Delete Deadline", "FAIL", "No test deadline ID available")
+        return False
+    
+    # Delete the deadline
+    response = make_request("DELETE", f"/deadlines/{test_deadline_id}")
+    if response and response.status_code == 200:
+        data = response.json()
+        log_test("Delete Deadline", "PASS", f"Deleted deadline successfully: {data.get('message', '')}")
+        
+        # Verify the deadline is gone by trying to get deadlines list
+        response = make_request("GET", f"/deadlines/{test_case_id}")
+        if response and response.status_code == 200:
+            deadlines = response.json()
+            # Check if the deleted deadline is no longer in the list
+            deleted_deadline_exists = any(deadline.get("id") == test_deadline_id for deadline in deadlines)
+            if not deleted_deadline_exists:
+                log_test("Verify Deadline Deletion", "PASS", "Deadline successfully removed from list")
+                test_deadline_id = None  # Clear the ID since it's deleted
+                return True
+            else:
+                log_test("Verify Deadline Deletion", "FAIL", "Deadline still exists in list after deletion")
+                return False
+        else:
+            log_test("Verify Deadline Deletion", "FAIL", "Failed to retrieve deadlines list for verification")
+            return False
+    else:
+        log_test("Delete Deadline", "FAIL", "Failed to delete deadline")
+        return False
+
+def test_deadline_deletion_nonexistent():
+    """Test deleting a non-existent deadline"""
+    print("=" * 60)
+    print("TESTING DEADLINE MANAGEMENT - DELETE NON-EXISTENT DEADLINE")
+    print("=" * 60)
+    
+    # Try to delete a non-existent deadline
+    fake_deadline_id = "507f1f77bcf86cd799439011"  # Valid ObjectId format but doesn't exist
+    response = make_request("DELETE", f"/deadlines/{fake_deadline_id}", expect_status=404)
+    if response and response.status_code == 404:
+        log_test("Delete Non-existent Deadline", "PASS", "Correctly returned 404 for non-existent deadline")
+        return True
+    else:
+        log_test("Delete Non-existent Deadline", "FAIL", f"Expected 404, got {response.status_code if response else 'No response'}")
         return False
 
 def test_ai_chat():
@@ -583,10 +699,14 @@ def run_all_tests():
     # Contact management tests
     test_results.append(test_contact_creation())
     test_results.append(test_contact_retrieval())
+    test_results.append(test_contact_deletion())
+    test_results.append(test_contact_deletion_nonexistent())
     
     # Deadline calculation tests
     test_results.append(test_deadline_calculation())
     test_results.append(test_deadline_retrieval())
+    test_results.append(test_deadline_deletion())
+    test_results.append(test_deadline_deletion_nonexistent())
     
     # AI integration test
     test_results.append(test_ai_chat())

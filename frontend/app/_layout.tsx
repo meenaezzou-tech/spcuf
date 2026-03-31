@@ -51,6 +51,15 @@ export default function RootLayout() {
           <Stack.Screen name="(auth)/register" />
           <Stack.Screen name="(auth)/onboarding" />
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="contacts" />
+          <Stack.Screen name="deadlines" />
+          <Stack.Screen name="documents" />
+          <Stack.Screen name="complaint" />
+          <Stack.Screen name="resources" />
+          <Stack.Screen name="case/create" />
+          <Stack.Screen name="case/[id]" />
+          <Stack.Screen name="legal/[id]" />
+          <Stack.Screen name="documents/[templateId]" />
         </Stack>
       </AuthProvider>
     </QueryClientProvider>

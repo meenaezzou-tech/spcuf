@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   RefreshControl,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { caseAPI, deadlineAPI } from '../src/services/api';
@@ -21,6 +22,8 @@ export default function DeadlinesScreen() {
   const [deadlines, setDeadlines] = useState<Deadline[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
 
   useEffect(() => {
     loadData();
@@ -48,6 +51,69 @@ export default function DeadlinesScreen() {
     loadData();
   };
 
+  const handleToggleComplete = async (deadline: Deadline) => {
+    setTogglingId(deadline.id);
+    try {
+      await deadlineAPI.updateDeadline(deadline.id, !deadline.completed);
+      setDeadlines(prev =>
+        prev.map(d => d.id === deadline.id ? { ...d, completed: !d.completed } : d)
+      );
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Failed to update deadline');
+    } finally {
+      setTogglingId(null);
+    }
+  };
+
+  const handleDeleteDeadline = (deadline: Deadline) => {
+    Alert.alert(
+      'Delete Deadline',
+      `Are you sure you want to delete "${deadline.deadline_type}"? This cannot be undone.`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => confirmDelete(deadline.id),
+        },
+      ]
+    );
+  };
+
+  const confirmDelete = async (deadlineId: string) => {
+    setDeletingId(deadlineId);
+    try {
+      await deadlineAPI.deleteDeadline(deadlineId);
+      setDeadlines(prev => prev.filter(d => d.id !== deadlineId));
+      Alert.alert('Deleted', 'Deadline removed successfully');
+    } catch (error: any) {
+      Alert.alert('Error', error.message || 'Failed to delete deadline');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const getDeadlineStatus = (deadline: Deadline) => {
+    if (deadline.completed) return 'completed';
+    const deadlineDate = new Date(deadline.deadline_date);
+    const now = new Date();
+    const daysUntil = Math.ceil((deadlineDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+    if (daysUntil < 0) return 'overdue';
+    if (daysUntil <= 7) return 'urgent';
+    if (daysUntil <= 30) return 'upcoming';
+    return 'future';
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'overdue': return Colors.accent.crimson;
+      case 'urgent': return Colors.accent.amber;
+      case 'upcoming': return Colors.accent.teal;
+      case 'completed': return Colors.accent.sage;
+      default: return Colors.silver.bright;
+    }
+  };
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -55,6 +121,10 @@ export default function DeadlinesScreen() {
       </View>
     );
   }
+
+  const upcomingDeadlines = deadlines.filter(d => !d.completed && new Date(d.deadline_date) >= new Date());
+  const overdueDeadlines = deadlines.filter(d => !d.completed && new Date(d.deadline_date) < new Date());
+  const completedDeadlines = deadlines.filter(d => d.completed);
 
   return (
     <View style={styles.container}>
@@ -84,55 +154,40 @@ export default function DeadlinesScreen() {
           </View>
         ) : (
           <>
-            {/* Upcoming Deadlines */}
-            <Text style={styles.sectionTitle}>Upcoming</Text>
-            {deadlines
-              .filter(d => !d.completed && new Date(d.deadline_date) >= new Date())
-              .map((deadline) => (
-                <View
-                  key={deadline.id}
-                  style={[styles.deadlineCard, { borderLeftColor: Colors.accent.amber }]}
-                >
-                  <View style={styles.deadlineHeader}>
-                    <Ionicons name="calendar" size={20} color={Colors.accent.amber} />
-                    <Text style={styles.deadlineType}>{deadline.deadline_type}</Text>
-                  </View>
-                  <Text style={styles.deadlineDate}>
-                    {format(new Date(deadline.deadline_date), 'MMMM d, yyyy')}
-                  </Text>
-                  <Text style={styles.deadlineCountdown}>
-                    {formatDistanceToNow(new Date(deadline.deadline_date), { addSuffix: true })}
-                  </Text>
-                  <Text style={styles.deadlineDescription}>{deadline.description}</Text>
-                </View>
-              ))}
-
-            {/* Past Deadlines */}
-            {deadlines.filter(d => new Date(d.deadline_date) < new Date()).length > 0 && (
+            {/* Overdue Deadlines */}
+            {overdueDeadlines.length > 0 && (
               <>
-                <Text style={[styles.sectionTitle, { marginTop: Spacing.xl }]}>Past</Text>
-                {deadlines
-                  .filter(d => new Date(d.deadline_date) < new Date())
-                  .map((deadline) => (
-                    <View
-                      key={deadline.id}
-                      style={[
-                        styles.deadlineCard,
-                        { borderLeftColor: Colors.silver.mid, opacity: 0.6 },
-                      ]}
-                    >
-                      <View style={styles.deadlineHeader}>
-                        <Ionicons name="calendar" size={20} color={Colors.silver.mid} />
-                        <Text style={[styles.deadlineType, { color: Colors.silver.mid }]}>
-                          {deadline.deadline_type}
-                        </Text>
-                      </View>
-                      <Text style={styles.deadlineDate}>
-                        {format(new Date(deadline.deadline_date), 'MMMM d, yyyy')}
-                      </Text>
-                      <Text style={styles.deadlineDescription}>{deadline.description}</Text>
-                    </View>
-                  ))}
+                <View style={styles.sectionHeader}>
+                  <Ionicons name="warning" size={18} color={Colors.accent.crimson} />
+                  <Text style={[styles.sectionTitle, { color: Colors.accent.crimson }]}>
+                    Overdue ({overdueDeadlines.length})
+                  </Text>
+                </View>
+                {overdueDeadlines.map((deadline) => renderDeadlineCard(deadline, 'overdue'))}
+              </>
+            )}
+
+            {/* Upcoming Deadlines */}
+            {upcomingDeadlines.length > 0 && (
+              <>
+                <View style={styles.sectionHeader}>
+                  <Ionicons name="time" size={18} color={Colors.accent.amber} />
+                  <Text style={styles.sectionTitle}>Upcoming ({upcomingDeadlines.length})</Text>
+                </View>
+                {upcomingDeadlines.map((deadline) => renderDeadlineCard(deadline, getDeadlineStatus(deadline)))}
+              </>
+            )}
+
+            {/* Completed Deadlines */}
+            {completedDeadlines.length > 0 && (
+              <>
+                <View style={[styles.sectionHeader, { marginTop: Spacing.lg }]}>
+                  <Ionicons name="checkmark-circle" size={18} color={Colors.accent.sage} />
+                  <Text style={[styles.sectionTitle, { color: Colors.accent.sage }]}>
+                    Completed ({completedDeadlines.length})
+                  </Text>
+                </View>
+                {completedDeadlines.map((deadline) => renderDeadlineCard(deadline, 'completed'))}
               </>
             )}
           </>
@@ -140,6 +195,70 @@ export default function DeadlinesScreen() {
       </ScrollView>
     </View>
   );
+
+  function renderDeadlineCard(deadline: Deadline, status: string) {
+    const statusColor = getStatusColor(status);
+    const isCompleted = deadline.completed;
+
+    return (
+      <View
+        key={deadline.id}
+        style={[
+          styles.deadlineCard,
+          { borderLeftColor: statusColor },
+          isCompleted && { opacity: 0.6 },
+        ]}
+      >
+        <View style={styles.deadlineHeader}>
+          <View style={styles.deadlineHeaderLeft}>
+            <TouchableOpacity
+              onPress={() => handleToggleComplete(deadline)}
+              disabled={togglingId === deadline.id}
+              style={styles.checkButton}
+            >
+              {togglingId === deadline.id ? (
+                <ActivityIndicator size="small" color={statusColor} />
+              ) : (
+                <Ionicons
+                  name={isCompleted ? 'checkmark-circle' : 'ellipse-outline'}
+                  size={22}
+                  color={statusColor}
+                />
+              )}
+            </TouchableOpacity>
+            <Text style={[styles.deadlineType, isCompleted && styles.completedText]}>
+              {deadline.deadline_type}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={() => handleDeleteDeadline(deadline)}
+            disabled={deletingId === deadline.id}
+            style={styles.deleteIconButton}
+          >
+            {deletingId === deadline.id ? (
+              <ActivityIndicator size="small" color={Colors.accent.crimson} />
+            ) : (
+              <Ionicons name="trash-outline" size={18} color={Colors.accent.crimson} />
+            )}
+          </TouchableOpacity>
+        </View>
+
+        <Text style={[styles.deadlineDate, isCompleted && styles.completedText]}>
+          {format(new Date(deadline.deadline_date), 'MMMM d, yyyy')}
+        </Text>
+
+        {!isCompleted && (
+          <Text style={[styles.deadlineCountdown, { color: statusColor }]}>
+            {status === 'overdue'
+              ? `Overdue by ${formatDistanceToNow(new Date(deadline.deadline_date))}`
+              : formatDistanceToNow(new Date(deadline.deadline_date), { addSuffix: true })}
+          </Text>
+        )}
+
+        <Text style={styles.deadlineDescription}>{deadline.description}</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -198,11 +317,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     maxWidth: 300,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: Spacing.md,
+    marginTop: Spacing.sm,
+  },
   sectionTitle: {
     fontFamily: 'Outfit_600SemiBold',
     fontSize: Typography.sizes.lg,
     color: Colors.white.soft,
-    marginBottom: Spacing.md,
+    marginLeft: Spacing.sm,
   },
   deadlineCard: {
     backgroundColor: Colors.black.card,
@@ -216,29 +341,55 @@ const styles = StyleSheet.create({
   deadlineHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: Spacing.xs,
+  },
+  deadlineHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  checkButton: {
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  deleteIconButton: {
+    width: 36,
+    height: 36,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   deadlineType: {
     fontFamily: 'Outfit_600SemiBold',
     fontSize: Typography.sizes.sm,
     color: Colors.white.soft,
-    marginLeft: Spacing.sm,
+    marginLeft: Spacing.xs,
+    flex: 1,
   },
   deadlineDate: {
     fontFamily: 'JetBrainsMono_500Medium',
     fontSize: Typography.sizes.base,
     color: Colors.white.soft,
     marginBottom: Spacing.xs,
+    marginLeft: Spacing.xxl - 12,
   },
   deadlineCountdown: {
     fontFamily: 'JetBrainsMono_400Regular',
     fontSize: Typography.sizes.sm,
     color: Colors.accent.amber,
     marginBottom: Spacing.xs,
+    marginLeft: Spacing.xxl - 12,
   },
   deadlineDescription: {
     fontFamily: 'Outfit_400Regular',
     fontSize: Typography.sizes.sm,
+    color: Colors.silver.mid,
+    marginLeft: Spacing.xxl - 12,
+  },
+  completedText: {
+    textDecorationLine: 'line-through',
     color: Colors.silver.mid,
   },
 });

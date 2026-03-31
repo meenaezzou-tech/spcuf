@@ -644,6 +644,20 @@ async def get_contacts(case_id: str, current_user: dict = Depends(get_current_us
         result.append(ContactResponse(**contact))
     return result
 
+@api_router.delete("/contacts/{contact_id}")
+async def delete_contact(contact_id: str, current_user: dict = Depends(get_current_user)):
+    contact = await db.contacts.find_one({"_id": ObjectId(contact_id)})
+    if not contact:
+        raise HTTPException(status_code=404, detail="Contact not found")
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"_id": ObjectId(contact["case_id"]), "user_id": str(current_user["_id"])})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    await db.contacts.delete_one({"_id": ObjectId(contact_id)})
+    return {"message": "Contact deleted successfully"}
+
 # ============================================================================
 # DEADLINE ROUTES
 # ============================================================================
@@ -750,6 +764,20 @@ async def update_deadline(deadline_id: str, completed: bool, current_user: dict 
     )
     
     return {"message": "Deadline updated successfully"}
+
+@api_router.delete("/deadlines/{deadline_id}")
+async def delete_deadline(deadline_id: str, current_user: dict = Depends(get_current_user)):
+    deadline = await db.deadlines.find_one({"_id": ObjectId(deadline_id)})
+    if not deadline:
+        raise HTTPException(status_code=404, detail="Deadline not found")
+    
+    # Verify case ownership
+    case = await db.cases.find_one({"_id": ObjectId(deadline["case_id"]), "user_id": str(current_user["_id"])})
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    
+    await db.deadlines.delete_one({"_id": ObjectId(deadline_id)})
+    return {"message": "Deadline deleted successfully"}
 
 # ============================================================================
 # AI ROUTES
