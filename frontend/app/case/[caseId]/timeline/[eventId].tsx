@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { caseAPI } from '../../src/services/api';
-import { TimelineEvent } from '../../src/types';
-import { Colors, Typography, Spacing, BorderRadius } from '../../src/constants/theme';
+import { caseAPI } from '../../../../src/services/api';
+import { TimelineEvent } from '../../../../src/types';
+import { Colors, Typography, Spacing, BorderRadius } from '../../../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 

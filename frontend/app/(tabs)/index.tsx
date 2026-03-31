@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/contexts/AuthContext';
-import { caseAPI, deadlineAPI } from '../../src/services/api';
+import { caseAPI, deadlineAPI, documentAPI } from '../../src/services/api';
 import { Case, Deadline } from '../../src/types';
 import { Colors, Typography, Spacing, BorderRadius } from '../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
