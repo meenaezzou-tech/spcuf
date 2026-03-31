@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { legalLibraryAPI } from '../src/services/api';
-import { LegalTopic } from '../src/types';
-import { Colors, Typography, Spacing, BorderRadius } from '../src/constants/theme';
+import { legalLibraryAPI } from '../../src/services/api';
+import { LegalTopic } from '../../src/types';
+import { Colors, Typography, Spacing, BorderRadius } from '../../src/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 
