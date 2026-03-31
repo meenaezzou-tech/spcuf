@@ -125,7 +125,7 @@ export default function CaseDetailScreen() {
 
           <TouchableOpacity
             style={[styles.actionButton, { borderLeftColor: Colors.accent.copper }]}
-            onPress={() => Alert.alert('Coming Soon', 'Document management is being developed')}
+            onPress={() => router.push('/documents')}
           >
             <Ionicons name="document" size={20} color={Colors.accent.copper} />
             <Text style={styles.actionButtonText}>Case Documents</Text>
@@ -134,7 +134,7 @@ export default function CaseDetailScreen() {
 
           <TouchableOpacity
             style={[styles.actionButton, { borderLeftColor: Colors.accent.teal }]}
-            onPress={() => Alert.alert('Coming Soon', 'Deadline tracking is being developed')}
+            onPress={() => router.push('/deadlines')}
           >
             <Ionicons name="calendar" size={20} color={Colors.accent.teal} />
             <Text style={styles.actionButtonText}>Deadlines</Text>
