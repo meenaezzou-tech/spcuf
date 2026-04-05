@@ -100,8 +100,16 @@ the family.
 
 ## Status
 
-Fully functional MVP — live and accessible today.
+Currently in active development. Core features are 
+fully functional including case management, legal 
+library, document templates, deadline tracking, 
+complaint workflows, and resource directory.
 
+AI Legal Advisor is integrated and operational 
+when API credits are available.
+
+Seeking funding and partnerships to complete 
+remaining features and launch publicly.
 ---
 
 ## Mission
