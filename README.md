@@ -11,7 +11,7 @@ Services (CPS) / DFPS system.
 Built by a Texas parent who lived through a CPS investigation — 
 with no coding background — using AI-powered tools and determination.
 
-**Live App**: https://reunify-now.preview.emergentagent.com/
+**Live App**: https://reunify-now.preview.emergentagent.com/login
 
 ---
 
